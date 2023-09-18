@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="row mb-3"
+     th:fragment="inputRow(object, field)"
+     th:object="${__${object}__}"
+     th:with="type=${type} ?: 'text', required=${required}, inputClass=${inputClass}">
+  <div class="col-md-10 offset-md-2" th:if="${type == 'checkbox'}">
+    <div class="form-check">
+      <input class="form-check-input"
+             th:classappend="${#fields.hasErrors(field) ? 'is-invalid' : ''} + ' ' + ${inputClass}"
+             th:field="*{__${field}__}"
+             th:type="${type}"/>
+      <label class="form-check-label" th:for="${#ids.prev(field)}">
+        <span th:text="#{__${object}__.__${field}__.label}"/><!--/*
+                        */--><span
+          th:replace="~{:: requiredStar(object=${object}, field=${field}, required=${required})}"/>
+      </label>
+    </div>
+    <div th:replace="~{:: fieldErrors(${object}, ${field})}"/>
+  </div>
+  <label class="col-md-2 col-form-label" th:for="${field}" th:if="${type != 'checkbox'}">
+    <span th:text="#{__${object}__.__${field}__.label}"/><!--/*
+                */--><span
+      th:replace="~{:: requiredStar(object=${object}, field=${field}, required=${required})}"/>
+  </label>
+  <div class="col-md-10" th:if="${type != 'checkbox'}">
+    <input
+        class="form-control"
+        th:classappend="${#fields.hasErrors(field) ? 'is-invalid' : ''} + ' ' + ${inputClass}"
+        th:field="*{__${field}__}"
+        th:if="${type == 'text' || type == 'password' || type == 'email' || type == 'tel' || type == 'number'}"
+        th:type="${type}"/>
+    <textarea class="form-control"
+              th:classappend="${#fields.hasErrors(field) || #fields.hasErrors(field + '.*') ? 'is-invalid' : ''} + ' ' + ${inputClass}"
+              th:field="*{__${field}__}"
+              th:if="${type == 'textarea'}"/>
+    <select class="form-select"
+            th:classappend="${#fields.hasErrors(field) ? 'is-invalid' : ''} + ' ' + ${inputClass}"
+            th:field="*{__${field}__}"
+            th:if="${type == 'select' || type == 'multiselect'}"
+            th:multiple="${type == 'multiselect'}">
+      <option th:if="${type == 'select'}" th:text="#{select.empty.label}" value=""/>
+      <option th:each="optionValue : ${__${field}__Values}"
+              th:if="${!(__${field}__Values instanceof T(java.util.Map))}" th:text="${optionValue}"
+              th:value="${optionValue}"/>
+      <option th:each="optionValue : ${__${field}__Values}"
+              th:if="${__${field}__Values instanceof T(java.util.Map)}"
+              th:text="${optionValue.value}"
+              th:value="${optionValue.key}"/>
+    </select>
+    <div
+        class="form-check form-check-inline pt-2"
+        th:if="${type == 'radio' && !T(com.volbog.ranobe.utils.WebUtils).isRequiredField(__${object}__, field)}">
+      <input class="form-check-input" th:checked="*{__${field}__} == null"
+             th:classappend="${#fields.hasErrors(field) ? 'is-invalid' : ''} + ' ' + ${inputClass}"
+             th:name="${field}"
+             type="radio" value=""/>
+      <label class="form-check-label" th:text="#{select.empty.label}"/>
+    </div>
+    <div class="form-check form-check-inline pt-2" th:each="radioValue : ${__${field}__Values}"
+         th:if="${type == 'radio'}">
+      <input class="form-check-input"
+             th:classappend="${#fields.hasErrors(field) ? 'is-invalid' : ''} + ' ' + ${inputClass}"
+             th:field="*{__${field}__}"
+             th:value="${radioValue}" type="radio"/>
+      <label class="form-check-label" th:for="${#ids.prev(field)}" th:text="${radioValue}"/>
+    </div>
+    <div th:replace="~{:: fieldErrors(${object}, ${field})}"/>
+  </div>
+</div>
+
+<span th:fragment="requiredStar(object, field)"
+      th:if="${required == null ? T(com.volbog.ranobe.utils.WebUtils).isRequiredField(__${object}__, field) : required}"
+      th:with="required=${required}">*</span>
+
+<div th:fragment="fieldErrors(object, field)" th:object="${__${object}__}" th:remove="tag">
+  <div class="invalid-feedback d-block"
+       th:if="${#fields.hasErrors(field) || #fields.hasErrors(field + '.*')}">
+    <p class="mb-0"
+       th:each="fieldError : ${#fields.detailedErrors(field + '*')}"
+       th:text="${(fieldError.fieldName != field ? fieldError.fieldName + ': ' : '') + fieldError.message}"/>
+  </div>
+</div>
+
+<div th:fragment="globalErrors(object)" th:object="${__${object}__}" th:remove="tag">
+  <div class="invalid-feedback d-block" th:if="${#fields.hasGlobalErrors()}">
+    <p class="mb-0" th:each="globalError : ${#fields.globalErrors()}" th:text="${globalError}"/>
+  </div>
+</div>
+</body>
+</html>

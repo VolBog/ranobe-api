@@ -60,7 +60,31 @@
       <artifactId>spring-boot-starter-web</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
-
+    <dependency>
+      <artifactId>spring-boot-starter-security</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+      <groupId>org.thymeleaf.extras</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>thymeleaf-layout-dialect</artifactId>
+      <groupId>nz.net.ultraq.thymeleaf</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>bootstrap</artifactId>
+      <groupId>org.webjars</groupId>
+      <version>5.3.1</version>
+    </dependency>
     <dependency>
       <artifactId>spring-boot-devtools</artifactId>
       <groupId>org.springframework.boot</groupId>
@@ -68,8 +92,12 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <artifactId>h2</artifactId>
-      <groupId>com.h2database</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>postgresql</artifactId>
+      <groupId>org.postgresql</groupId>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -105,14 +133,7 @@
       <groupId>commons-validator</groupId>
       <version>1.7</version>
     </dependency>
-    <dependency>
-      <artifactId>spring-boot-starter-validation</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
-    <dependency>
-      <artifactId>spring-boot-starter-actuator</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
+
   </dependencies>
   <description>Ranobe website</description>
   <groupId>com.volbog</groupId>

@@ -11,13 +11,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -43,9 +46,12 @@ public class User {
       inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
   )
   private List<Role> roles = new ArrayList<>();
-  private LocalDateTime createAt;
-
-  private LocalDateTime lastModifiedAt;
+  @CreatedDate
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private Date createAt;
+  @LastModifiedDate
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private Date lastModifiedAt;
 
   private String createdBy;
 
